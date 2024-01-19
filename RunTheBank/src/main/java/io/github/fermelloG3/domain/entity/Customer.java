@@ -18,6 +18,15 @@ public class Customer {
 
     private String password;
 
+    public Customer(String name) {
+        this.name = name;
+    }
+
+    public Customer(String name, String document) {
+        this.name = name;
+        this.document = document;
+    }
+
     public Long getId() {
         return id;
     }
