@@ -9,14 +9,19 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column
     private String name;
 
+    @Column
     private String document;
 
+    @Column
     private String adress;
 
+    @Column
     private String password;
+
+    public Customer(){}
 
     public Customer(String name) {
         this.name = name;
