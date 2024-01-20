@@ -4,6 +4,9 @@ package io.github.fermelloG3.domain.entity;
 import jakarta.persistence.*;
 import org.springframework.lang.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Customer {
 
@@ -21,6 +24,9 @@ public class Customer {
 
     @Column
     private String password;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Account> accounts = new ArrayList<>();
 
     public Customer(){}
 
@@ -82,5 +88,15 @@ public class Customer {
                 ", adress='" + adress + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public void addAccount(Account account){
+        accounts.add(account);
+        account.setCustomer(this);
+    }
+
+    public void removeAccount(Account account){
+        accounts.remove(account);
+        account.setCustomer(null);
     }
 }

@@ -1,5 +1,6 @@
 package io.github.fermelloG3.service;
 
+import io.github.fermelloG3.domain.entity.Account;
 import io.github.fermelloG3.domain.entity.Customer;
 import io.github.fermelloG3.domain.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
