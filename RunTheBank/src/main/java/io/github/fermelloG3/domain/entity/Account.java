@@ -19,7 +19,7 @@ public class Account {
     private boolean active;
 
     public Account(){
-        
+
     }
     public String getAgency() {
         return agency;

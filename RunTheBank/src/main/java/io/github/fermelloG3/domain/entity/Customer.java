@@ -2,6 +2,7 @@ package io.github.fermelloG3.domain.entity;
 
 
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
 
 @Entity
 public class Customer {
@@ -70,5 +71,16 @@ public class Customer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", document='" + document + '\'' +
+                ", adress='" + adress + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
