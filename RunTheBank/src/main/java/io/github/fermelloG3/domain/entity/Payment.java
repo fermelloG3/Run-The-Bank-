@@ -26,7 +26,7 @@ public class Payment {
     private PaymentStatus status;
 
     public Payment(){
-        
+
     }
     public Long getId() {
         return id;
