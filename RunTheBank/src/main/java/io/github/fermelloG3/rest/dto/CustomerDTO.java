@@ -4,6 +4,9 @@ public class CustomerDTO {
 
     private String name;
     private String document;
+    private String adress;
+
+    private String password;
 
     public CustomerDTO(){}
 
@@ -23,4 +26,19 @@ public class CustomerDTO {
         this.document = document;
     }
 
+    public String getAdress() {
+        return adress;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
