@@ -6,6 +6,7 @@ import io.github.fermelloG3.domain.enums.PaymentStatus;
 import io.github.fermelloG3.domain.repository.AccountRepository;
 import io.github.fermelloG3.domain.repository.PaymentRepository;
 import io.github.fermelloG3.rest.dto.PaymentDTO;
+import org.apache.camel.ProducerTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +21,14 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final AccountRepository accountRepository;
+    private final ProducerTemplate producerTemplate;
 
     @Autowired
-    public PaymentService(PaymentRepository paymentRepository, AccountRepository accountRepository){
+    public PaymentService(PaymentRepository paymentRepository, AccountRepository accountRepository,
+                          ProducerTemplate producerTemplate){
         this.paymentRepository = paymentRepository;
         this.accountRepository = accountRepository;
+        this.producerTemplate = producerTemplate;
     }
 
 
@@ -59,8 +63,17 @@ public class PaymentService {
         newPayment.setReceiverAccountId(receiverAccount.getId());
         newPayment.setStatus(PaymentStatus.COMPLETED);
 
+        sendNotification("Notification message");
+
         return paymentRepository.save(newPayment);
+
+
     }
+
+    private void sendNotification(String message) {
+        producerTemplate.sendBody("seda:notify", message);
+    }
+
 
     private Account getAccountByAgency(String agency){
         return accountRepository.findByAgency(agency)
