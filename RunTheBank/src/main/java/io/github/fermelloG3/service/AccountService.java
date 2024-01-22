@@ -8,6 +8,7 @@ import io.github.fermelloG3.rest.dto.CustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class AccountService {
 
     public Account createAccount(CustomerDTO customerDTO){
         Account newAccount = new Account();
-        newAccount.setBalance(0.0);
+        newAccount.setBalance(BigDecimal.ZERO);
         newAccount.setActive(true);
 
         Customer customer = new Customer();

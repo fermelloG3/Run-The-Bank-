@@ -1,37 +1,65 @@
 package io.github.fermelloG3.service;
 
 import io.github.fermelloG3.domain.entity.Account;
+import io.github.fermelloG3.domain.entity.Payment;
+import io.github.fermelloG3.domain.enums.PaymentStatus;
 import io.github.fermelloG3.domain.repository.AccountRepository;
+import io.github.fermelloG3.domain.repository.PaymentRepository;
+import io.github.fermelloG3.rest.dto.PaymentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class PaymentService {
 
-    private AccountRepository accountRepository;
+    private final PaymentRepository paymentRepository;
+    private final AccountRepository accountRepository;
 
     @Autowired
-    public PaymentService(AccountRepository accountRepository){
+    public PaymentService(PaymentRepository paymentRepository, AccountRepository accountRepository){
+        this.paymentRepository = paymentRepository;
         this.accountRepository = accountRepository;
     }
 
-    @Transactional
-    public void makePayment(String fromAgency, String toAgency, double amount){
-        Account fromAccount = getAccountByAgency(fromAgency);
-        Account toAccount = getAccountByAgency(toAgency);
 
-        if(fromAccount.getBalance() < amount){
-            throw new IllegalArgumentException("Insufficient funds");
+    public List<Payment> getAllPayments(){
+        return paymentRepository.findAll();
+    }
+
+
+    public Optional<Payment> findPaymentById(Long paymentId){
+        return paymentRepository.findById(paymentId);
+    }
+
+    @Transactional
+    public Payment makePayment(PaymentDTO paymentDTO){
+        Account senderAccount = accountRepository.findByAgency(paymentDTO.getFromAgency())
+                .orElseThrow(()-> new NoSuchElementException("Sender account not found"));
+        Account receiverAccount = accountRepository.findByAgency(paymentDTO.getToAgency())
+                .orElseThrow(()-> new NoSuchElementException("Receiver account not found"));
+
+        BigDecimal amount = paymentDTO.getAmount();
+
+        if(senderAccount.getBalance().compareTo(amount) < 0){
+            throw new IllegalArgumentException("Insuficient funds in sender account");
         }
 
-        fromAccount.setBalance(fromAccount.getBalance() - amount);
-        toAccount.setBalance(toAccount.getBalance() + amount);
+        senderAccount.setBalance(senderAccount.getBalance().subtract(amount));
+        receiverAccount.setBalance(receiverAccount.getBalance().add(amount));
 
-        accountRepository.save(fromAccount);
-        accountRepository.save(toAccount);
+        Payment newPayment = new Payment();
+        newPayment.setAmount(amount);
+        newPayment.setSenderAccountId(senderAccount.getId());
+        newPayment.setReceiverAccountId(receiverAccount.getId());
+        newPayment.setStatus(PaymentStatus.COMPLETED);
+
+        return paymentRepository.save(newPayment);
     }
 
     private Account getAccountByAgency(String agency){
@@ -40,4 +68,11 @@ public class PaymentService {
     }
 
 
+    public void cancelPayment(Long paymentId){
+        Payment deletePayment = paymentRepository.findById(paymentId)
+                .orElseThrow(()-> new NoSuchElementException("Payment not found"));
+
+        paymentRepository.delete(deletePayment);
+    }
+    
 }

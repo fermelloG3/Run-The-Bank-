@@ -1,9 +1,11 @@
 package io.github.fermelloG3.rest.dto;
 
+import java.math.BigDecimal;
+
 public class PaymentDTO {
     private String fromAgency;
     private String toAgency;
-    private double amount;
+    private BigDecimal amount;
 
     public PaymentDTO (){}
 
@@ -23,11 +25,11 @@ public class PaymentDTO {
         this.toAgency = toAgency;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 }

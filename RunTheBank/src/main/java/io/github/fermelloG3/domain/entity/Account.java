@@ -3,6 +3,7 @@ package io.github.fermelloG3.domain.entity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 public class Account {
@@ -15,7 +16,7 @@ public class Account {
     private String agency;
 
     @Column
-    private double balance;
+    private BigDecimal balance;
 
     @Column
     private boolean active;
@@ -27,6 +28,15 @@ public class Account {
     public Account(){
 
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getAgency() {
         return agency;
     }
@@ -35,11 +45,11 @@ public class Account {
         this.agency = agency;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 
@@ -57,5 +67,10 @@ public class Account {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(balance);
     }
 }
