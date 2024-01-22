@@ -67,12 +67,12 @@ public class PaymentService {
                 .orElseThrow(() -> new IllegalArgumentException("Account not found for agency: " + agency));
     }
 
-
+    @Transactional
     public void cancelPayment(Long paymentId){
         Payment deletePayment = paymentRepository.findById(paymentId)
                 .orElseThrow(()-> new NoSuchElementException("Payment not found"));
 
         paymentRepository.delete(deletePayment);
     }
-    
+
 }
