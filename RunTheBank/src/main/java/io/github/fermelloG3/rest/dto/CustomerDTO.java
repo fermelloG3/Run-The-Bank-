@@ -10,6 +10,18 @@ public class CustomerDTO {
 
     public CustomerDTO(){}
 
+    public CustomerDTO(String name, String document) {
+        this.name = name;
+        this.document = document;
+    }
+
+    public CustomerDTO(String name, String document, String adress, String password) {
+        this.name = name;
+        this.document = document;
+        this.adress = adress;
+        this.password = password;
+    }
+
     public String getName() {
         return name;
     }

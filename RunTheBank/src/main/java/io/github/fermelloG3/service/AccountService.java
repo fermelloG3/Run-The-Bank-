@@ -36,10 +36,7 @@ public class AccountService {
         newAccount.setBalance(BigDecimal.ZERO);
         newAccount.setActive(true);
 
-        Customer customer = new Customer();
-        customer.setName(customerDTO.getName());
-        customer.setDocument(customerDTO.getDocument());
-
+        Customer customer = Customer.fromCustomerDTO(customerDTO);
         newAccount.setCustomer(customer);
 
         return accountRepository.save(newAccount);

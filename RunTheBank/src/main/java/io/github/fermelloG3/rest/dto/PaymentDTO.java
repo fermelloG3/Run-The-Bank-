@@ -9,6 +9,12 @@ public class PaymentDTO {
 
     public PaymentDTO (){}
 
+    public PaymentDTO(String fromAgency, String toAgency, BigDecimal amount) {
+        this.fromAgency = fromAgency;
+        this.toAgency = toAgency;
+        this.amount = amount;
+    }
+
     public String getFromAgency() {
         return fromAgency;
     }

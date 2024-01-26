@@ -55,7 +55,9 @@ public class CustomerService {
     }
 
     private void mapCustomerDtoEntity(CustomerDTO customerDTO, Customer customer){
-        customer.setName(customerDTO.getName());
+        if (customerDTO.getName() != null) {
+            customer.setName(customerDTO.getName());
+        }
         customer.setDocument(customerDTO.getDocument());
         customer.setAdress(customerDTO.getAdress());
         customer.setPassword(customerDTO.getPassword());

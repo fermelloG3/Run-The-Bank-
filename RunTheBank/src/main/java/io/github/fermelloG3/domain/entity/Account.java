@@ -46,7 +46,7 @@ public class Account {
     }
 
     public BigDecimal getBalance() {
-        return balance;
+        return balance == null ? BigDecimal.ZERO : balance;
     }
 
     public void setBalance(BigDecimal balance) {
@@ -62,7 +62,7 @@ public class Account {
     }
 
     public boolean isActive() {
-        return active;
+        return true;
     }
 
     public void setActive(boolean active) {

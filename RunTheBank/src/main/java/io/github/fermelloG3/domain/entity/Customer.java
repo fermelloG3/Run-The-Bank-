@@ -1,6 +1,7 @@
 package io.github.fermelloG3.domain.entity;
 
 
+import io.github.fermelloG3.rest.dto.CustomerDTO;
 import jakarta.persistence.*;
 import org.springframework.lang.NonNull;
 
@@ -28,7 +29,9 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Account> accounts = new ArrayList<>();
 
-    public Customer(){}
+
+    public Customer() {
+    }
 
     public Customer(String name) {
         this.name = name;
@@ -90,13 +93,23 @@ public class Customer {
                 '}';
     }
 
-    public void addAccount(Account account){
+    public void addAccount(Account account) {
         accounts.add(account);
         account.setCustomer(this);
     }
 
-    public void removeAccount(Account account){
+    public void removeAccount(Account account) {
         accounts.remove(account);
         account.setCustomer(null);
+    }
+
+    public static Customer fromCustomerDTO(CustomerDTO customerDTO) {
+        Customer customer = new Customer();
+        customer.setName(customerDTO.getName());
+        customer.setDocument(customerDTO.getDocument());
+        customer.setAdress(customerDTO.getAdress());
+        customer.setPassword(customerDTO.getPassword());
+        return customer;
+
     }
 }
