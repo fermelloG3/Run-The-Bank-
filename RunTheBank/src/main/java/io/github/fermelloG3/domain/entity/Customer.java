@@ -2,9 +2,9 @@ package io.github.fermelloG3.domain.entity;
 
 
 import io.github.fermelloG3.rest.dto.CustomerDTO;
-import jakarta.persistence.*;
-import org.springframework.lang.NonNull;
 
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,13 +103,4 @@ public class Customer {
         account.setCustomer(null);
     }
 
-    public static Customer fromCustomerDTO(CustomerDTO customerDTO) {
-        Customer customer = new Customer();
-        customer.setName(customerDTO.getName());
-        customer.setDocument(customerDTO.getDocument());
-        customer.setAdress(customerDTO.getAdress());
-        customer.setPassword(customerDTO.getPassword());
-        return customer;
-
-    }
 }

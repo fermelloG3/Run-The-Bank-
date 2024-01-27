@@ -3,13 +3,14 @@ package io.github.fermelloG3.rest.controller;
 import io.github.fermelloG3.domain.entity.Customer;
 import io.github.fermelloG3.rest.dto.CustomerDTO;
 import io.github.fermelloG3.service.CustomerService;
-import org.aspectj.apache.bcel.classfile.Module;
+
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,12 +27,14 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+    @Operation(summary = "Listar", description = "Metodo para listar todos os clientes", tags = "Customers")
     @GetMapping
     public ResponseEntity<List<Customer>> getAllCustomers(){
         List<Customer> customers = customerService.getAllCustomers();
         return new ResponseEntity<>(customers, HttpStatus.OK);
     }
 
+    @Operation(summary = "Buscar por id", description = "Metodo que retorna um cliente por id", tags = "Customers")
     @GetMapping("/{customerId}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable Long customerId){
         Optional<Customer> customer = customerService.findCustomersById(customerId);
@@ -39,6 +42,7 @@ public class CustomerController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @Operation(summary = "Criar cliente", description = "Metodo para criar um cliente", tags = "Customers")
     @PostMapping
     public ResponseEntity<Customer> createCustomer(@RequestBody CustomerDTO customerDTO){
         try {
@@ -49,6 +53,7 @@ public class CustomerController {
         }
 
     }
+    @Operation(summary = "Atualizar", description = "Metodo para atualizar cliente", tags = "Customers")
     @PutMapping("/{customerId}")
     public ResponseEntity<Customer> updateCustomer(@PathVariable Long customerId, @RequestBody CustomerDTO customerDTO) {
         try {
@@ -61,6 +66,7 @@ public class CustomerController {
         }
     }
 
+    @Operation(summary = "Deletar", description = "Metodo para deletar cliente", tags = "Customers")
     @DeleteMapping("/{customerId}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Long customerId) {
         try {

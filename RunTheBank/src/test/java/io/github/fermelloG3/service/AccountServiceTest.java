@@ -1,6 +1,7 @@
 package io.github.fermelloG3.service;
 
 import io.github.fermelloG3.domain.entity.Account;
+import io.github.fermelloG3.domain.entity.Customer;
 import io.github.fermelloG3.domain.repository.AccountRepository;
 import io.github.fermelloG3.rest.dto.CustomerDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,23 +61,35 @@ class AccountServiceTest {
     }
 
     @Test
-    void testCreateAccount() {
+    void createAccount() {
 
-        CustomerDTO customerDTO = new CustomerDTO("Frodo Baggins", "12345", "The Shire", "ringbearer");
-        when(accountRepository.save(any(Account.class))).thenReturn(new Account());
+        CustomerDTO customerDTO = new CustomerDTO("Frodo Baggins", "12345");
+
+
+        Account expectedAccount = new Account();
+        expectedAccount.setBalance(BigDecimal.ZERO);
+        expectedAccount.setActive(true);
+
+        Customer expectedCustomer = new Customer();
+        expectedCustomer.setName(customerDTO.getName());
+        expectedCustomer.setDocument(customerDTO.getDocument());
+        expectedCustomer.setAdress(customerDTO.getAdress());
+        expectedCustomer.setPassword(customerDTO.getPassword());
+
+        expectedAccount.setCustomer(expectedCustomer);
+
+
+        when(accountRepository.save(any(Account.class))).thenReturn(expectedAccount);
 
 
         Account createdAccount = accountService.createAccount(customerDTO);
 
 
         assertNotNull(createdAccount);
-        assertEquals(BigDecimal.ZERO, createdAccount.getBalance());
-        assertTrue(createdAccount.isActive());
+        assertEquals(expectedAccount.getBalance(), createdAccount.getBalance());
+        assertEquals(expectedAccount.isActive(), createdAccount.isActive());
         assertNotNull(createdAccount.getCustomer());
-        assertEquals("Frodo Baggins", createdAccount.getCustomer().getName());
-        assertEquals("12345", createdAccount.getCustomer().getDocument());
-        assertEquals("The Shire", createdAccount.getCustomer().getAdress());
-        assertEquals("ringbearer", createdAccount.getCustomer().getPassword());
+        assertEquals(expectedCustomer, createdAccount.getCustomer());
     }
 
 

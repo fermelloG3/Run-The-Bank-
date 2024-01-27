@@ -36,24 +36,34 @@ public class AccountService {
         newAccount.setBalance(BigDecimal.ZERO);
         newAccount.setActive(true);
 
-        Customer customer = Customer.fromCustomerDTO(customerDTO);
+        Customer customer = new Customer();
+        customer.setName(customerDTO.getName());
+        customer.setDocument(customerDTO.getDocument());
+        customer.setAdress(customerDTO.getAdress());
+        customer.setPassword(customerDTO.getPassword());
+
         newAccount.setCustomer(customer);
 
         return accountRepository.save(newAccount);
     }
 
-    public Account updateAccount(Long customerId, CustomerDTO customerDTO){
+    public Account updateAccount(Long customerId, CustomerDTO customerDTO) {
+
         Account existingAccount = accountRepository.findById(customerId)
-                .orElseThrow(()-> new NoSuchElementException("Account not found"));
-        Customer existingCustomer = existingAccount.getCustomer();
-        existingCustomer.setName(customerDTO.getName());
-        existingCustomer.setPassword(customerDTO.getPassword());
-        existingCustomer.setAdress(customerDTO.getAdress());
+                .orElseThrow(() -> new NoSuchElementException("Account not found"));
 
-        existingAccount.setCustomer(existingCustomer);
 
-        return accountRepository.save(existingAccount);
+        if (existingAccount.getCustomer() != null) {
+            Customer existingCustomer = existingAccount.getCustomer();
+            existingCustomer.setName(customerDTO.getName());
+            existingCustomer.setPassword(customerDTO.getPassword());
+            existingCustomer.setAdress(customerDTO.getAdress());
 
+
+            return accountRepository.save(existingAccount);
+        } else {
+            throw new IllegalStateException("Customer is null for the existing account.");
+        }
     }
 
     public void deleteAccount(Long accountId){

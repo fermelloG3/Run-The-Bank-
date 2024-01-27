@@ -1,8 +1,9 @@
 package io.github.fermelloG3.domain.entity;
 
 import io.github.fermelloG3.domain.enums.PaymentStatus;
-import jakarta.persistence.*;
 
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
